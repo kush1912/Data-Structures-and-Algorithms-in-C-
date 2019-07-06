@@ -24,7 +24,7 @@ void merge(int arr[], int s,int e)
     
     while(i<=mid)
     {
-        cout<<arr[i]<<" * "<<endl;
+        //cout<<arr[i]<<" * "<<endl;
         temp[k++] = arr[i++];
     }
     while(j<=e)
