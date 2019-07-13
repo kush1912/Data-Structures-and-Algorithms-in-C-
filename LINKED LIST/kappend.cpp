@@ -1,3 +1,12 @@
+/*
+Sample Input
+7
+1 2 2 1 8 5 6
+3
+Sample Output
+8 5 6 1 2 2 1
+*/
+
 #include <iostream>
 using namespace std;
 
