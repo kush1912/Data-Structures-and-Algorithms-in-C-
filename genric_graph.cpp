@@ -146,30 +146,107 @@ public:
         }
         cout<<endl<<"The current graph has "<<c<<" components.";
     }
+/// Cycle Detection using BFS.
+    bool iscyclicbfs(T src)
+    {
+        map<T,bool> visited;
+        map<T,T> parent;
+        queue<T> q;
+        q.push(src);
+        visited[src] = true;
+        parent[src] = src;
+
+        while(!q.empty())
+        {
+            T node = q.front();
+            q.pop();
+            for(T nbr:adjlist[node])
+            {
+                if(visited[nbr]!=true && parent[node]!=nbr)
+                {
+                    return true;
+                }
+                /// if and else if working without else part.
+                else if(!visited[nbr])
+                {
+                    visited[nbr]=true;
+                    parent[nbr] = node;
+                    q.push(nbr);
+                }
+            }
+        }
+        return false;
+    }
+
+    /// Cycle Detection using DFS.
+    cychelper(T node, map<T,bool> &visited, map<T,bool> &instack)
+    {
+        instack[node]=true;
+        visited[node]=true;
+        for(T nbr: adjlist[node])
+        {
+            if(!visited[nbr] && cychelper(nbr,visited,instack)|| instack[nbr])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool iscyclicdfs(T src)
+    {
+        map<T,bool>visited;
+        map<T,bool> instack;
+        visited[src]=true;
+        instack[src]=true;
+        bool c;
+        for(auto i: adjlist)
+        {
+            T node = i.first;
+            if(!visited[node])
+            {
+                c = cychelper(src,visited,instack);
+            }
+        }
+        if(c)
+            cout<<"Cyclic"<<endl;
+        else
+            cout<<"Not Cyclic"<<endl;
+    }
+
 
 };
 
 int main()
 {
     graph <int> g;
-    g.addedge(0,1);
-    g.addedge(0,4);
-    g.addedge(4,3);
-    g.addedge(1,4);
-    g.addedge(1,2);
-    g.addedge(2,3);
-    g.addedge(1,3);
-    g.addedge(5,6);
-    g.addedge(6,7);
+    g.addedge(1,2,false);
+    g.addedge(2,3,false);
+    g.addedge(3,4,false);
+    g.addedge(4,2,false);
+    g.addedge(4,1,false);
+    g.addedge(5,3,false);
+    g.addedge(5,6,false);
+    g.addedge(6,6,false);
+    //g.addedge(6,7);
     g.print();
     cout<<endl<<endl;
     //g.bfs(0);
     cout<<endl<<endl;
     //g.ssp(0);
     cout<<endl<<endl;
-    //g.dfs(0);
-    g.connected_components(0);
+    g.dfs(1);
+    cout<<endl<<endl;
+    g.connected_components(1);
+    cout<<endl<<endl;
+    if(g.iscyclicbfs(1))
+    {
+        cout<<"Cyclic"<<endl;
+    }
+    else
+        cout<<"Not, Cyclic "<<endl;
 
+    g.iscyclicdfs(1);
 
 
     cout<<endl<<endl;
